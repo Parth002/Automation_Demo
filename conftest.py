@@ -3,12 +3,25 @@ from selenium import webdriver
 
 @pytest.fixture
 def driver():
-    # Setup: Initialize the browser
-    driver = webdriver.Chrome()
-    driver.implicitly_wait(10) # Modern wait strategy
-    driver.maximize_window()
-    
-    yield driver # This is where the test happens
-    
-    # Teardown: Close the browser after the test is done
+    # Configure Chrome options first
+    options = webdriver.ChromeOptions()
+
+    prefs = {
+        "credentials_enable_service": False,
+        "profile.password_manager_enabled": False,
+        "profile.password_manager_leak_detection": False
+    }
+
+    options.add_experimental_option("prefs", prefs)
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-infobars")
+    options.add_argument("--start-maximized")  # better than maximize_window()
+
+    # Create driver ONCE with options
+    driver = webdriver.Chrome(options=options)
+
+    driver.implicitly_wait(10)
+
+    yield driver
+
     driver.quit()
