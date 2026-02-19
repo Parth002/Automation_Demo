@@ -20,7 +20,7 @@ def test_complete_checkout_flow(driver):
     time.sleep(2)
   
     # 3. Add 'Backpack' to Cart
-    
+        
     driver.find_element(By.CSS_SELECTOR, "[data-test='add-to-cart-sauce-labs-backpack']").click()
     
     # 4. Go to Cart
